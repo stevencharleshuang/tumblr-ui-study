@@ -10,6 +10,10 @@ body {
   text-align: center;
 }
 
+.screen {
+  transition: all 1s ease;
+}
+
 .first-screen {
   position: absolute;
   width: 100%;

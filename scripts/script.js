@@ -6,25 +6,25 @@ const fourthScreen = document.querySelector('.fourth-screen');
 const fifthScreen = document.querySelector('.fifth-screen');
 
 let neutralY = 0;
-let prevIndex;
+let index;
+let prevTargetEl;
+let targetEl;
 
-screens.forEach(screen => screen.addEventListener('wheel', handleWheel));
+screens.forEach(screen => screen.addEventListener('wheel',  _.throttle(handleWheel, 2000, { leading: true, trailing: true})));
 
 function handleWheel(e) {
-  let target = parseInt(e.target.dataset.num);
-  let targetEl = screens[target];
-  let prevTargetEl = screens[prevIndex];
-  console.log('scroll', target, targetEl, prevTargetEl);
-  if (target > 0 && target <= 4) {
-    if (e.deltaY > neutralY) {
-      prevIndex = target;
-      targetEl.style.top = '-100vh';
-      console.log('scroll down', prevIndex);
-    } else if (e.deltaY < neutralY) {
-      console.log('scroll up');
-      prevIndex = target;
-      prevTargetEl.style.top = '0';
-    }
+  e.stopPropagation();
+  index = parseInt(e.target.dataset.num);
+  console.log('scroll', index);
+  if (e.deltaY > neutralY && index > 0) {
+    targetEl = screens[index];
+    targetEl.style.top = '-100vh';
+    console.log('scroll down');
+  } else if (e.deltaY < neutralY && index < 4) {
+    index += 1;
+    targetEl = screens[index];
+    targetEl.style.top = '0';
+    console.log('scroll up');
   }
 }
 
